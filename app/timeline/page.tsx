@@ -30,7 +30,7 @@ export default function TimeLinePage() {
       : null;
 
   /*
-   * Get the small events between the selected main event
+   * Small events between the selected main event
    * and the next main event.
    */
   const zoomedSmallEvents = useMemo(() => {
@@ -42,15 +42,13 @@ export default function TimeLinePage() {
   }, [selectedMain, nextMain]);
 
   /*
-   * When zoomed:
+   * Full timeline:
+   * only major events.
    *
-   * selected main event
-   *        ↓
-   * small events
-   *        ↓
-   * next main event
-   *
-   * Otherwise, show only the main timeline events.
+   * Zoomed timeline:
+   * selected major event
+   * + small events
+   * + next major event
    */
   const visibleEvents = selectedMain
     ? [
@@ -91,8 +89,63 @@ export default function TimeLinePage() {
     return ((year - timelineStart) / timelineRange) * 100;
   };
 
+  /*
+   * Determine whether an event is a major event.
+   */
+  const isMajorEvent = (event: TimelineEvent) => {
+    return mainTimelineEvents.some(
+      (main) => main.id === event.id,
+    );
+  };
+
+  /*
+   * Alternate small event labels between
+   * the upper and lower lanes.
+   */
+  const getSmallEventLane = (event: TimelineEvent) => {
+    const index = zoomedSmallEvents.findIndex(
+      (item) => item.id === event.id,
+    );
+
+    return index % 2 === 0 ? "below" : "above";
+  };
+
+  /*
+   * Desktop:
+   *   Hover = show card
+   *
+   * Mobile:
+   *   Tap = show card
+   */
+  const handleEventClick = (event: TimelineEvent) => {
+    /*
+     * Major events also control the zoom.
+     */
+    if (isMajorEvent(event)) {
+      setSelectedMainId(event.id);
+    }
+
+    /*
+     * If the same event is already showing its card,
+     * tapping it again closes the card.
+     */
+    if (hoveredEvent?.id === event.id) {
+      setHoveredEvent(null);
+    } else {
+      setHoveredEvent(event);
+    }
+  };
+
   const resetZoom = () => {
     setSelectedMainId(null);
+    setHoveredEvent(null);
+  };
+
+  /*
+   * Clicking the empty timeline area closes the card
+   * on touch devices.
+   */
+  const handleTimelineBackgroundClick = () => {
     setHoveredEvent(null);
   };
 
@@ -149,10 +202,10 @@ export default function TimeLinePage() {
 
         <div className="relative mt-40">
           {/* =======================================================
-              HOVER CARD
+              HOVER / TAP CARD
           ======================================================== */}
 
-          <div className="pointer-events-none absolute bottom-[180px] left-0 right-0 z-50 flex justify-center">
+          <div className="pointer-events-none absolute bottom-[180px] left-0 right-0 z-50 flex justify-center px-4">
             <AnimatePresence mode="wait">
               {hoveredEvent && (
                 <motion.div
@@ -176,7 +229,7 @@ export default function TimeLinePage() {
                     duration: 0.2,
                     ease: "easeOut",
                   }}
-                  className="w-[340px]"
+                  className="w-[340px] max-w-full"
                 >
                   <div className="relative overflow-hidden rounded-2xl border border-amber-200/10 bg-[#15130f] shadow-2xl shadow-black/60">
                     {/* Image */}
@@ -198,11 +251,9 @@ export default function TimeLinePage() {
 
                       <div className="flex items-center justify-between">
                         <span className="text-[9px] font-semibold uppercase tracking-[0.3em] text-amber-400/70">
-                          {mainTimelineEvents.some(
-                            (event) => event.id === hoveredEvent.id,
-                          )
+                          {isMajorEvent(hoveredEvent)
                             ? "Major Event"
-                            : "Event"}
+                            : "Recorded Event"}
                         </span>
 
                         <span className="font-mono text-[10px] text-stone-500">
@@ -249,7 +300,7 @@ export default function TimeLinePage() {
                   opacity: 0,
                   y: -8,
                 }}
-                className="mb-8 flex items-center justify-center gap-4"
+                className="mb-8 flex flex-wrap items-center justify-center gap-3"
               >
                 <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-stone-600">
                   Viewing
@@ -262,18 +313,23 @@ export default function TimeLinePage() {
                   )}
                 </span>
 
-                <span className="text-stone-700">→</span>
+                <span className="text-stone-700">
+                  →
+                </span>
 
                 <span className="font-serif text-sm text-stone-400">
                   {nextMain
-                    ? formatYear(nextMain.year, nextMain.era)
+                    ? formatYear(
+                        nextMain.year,
+                        nextMain.era,
+                      )
                     : "Beyond"}
                 </span>
 
                 <button
                   type="button"
                   onClick={resetZoom}
-                  className="ml-3 rounded-full border border-white/10 px-3 py-1.5 text-[9px] uppercase tracking-[0.2em] text-stone-500 transition-colors hover:border-amber-400/30 hover:text-amber-400"
+                  className="ml-2 rounded-full border border-white/10 px-3 py-1.5 text-[9px] uppercase tracking-[0.2em] text-stone-500 transition-colors hover:border-amber-400/30 hover:text-amber-400"
                 >
                   Full timeline
                 </button>
@@ -285,19 +341,17 @@ export default function TimeLinePage() {
               HORIZONTAL SCROLL CONTAINER
           ======================================================== */}
 
-          <div className="overflow-x-auto pb-16 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {/* 
-              The extra width gives the timeline more breathing room.
-              The actual axis lives inside inset-x-10, preventing the
-              first and last dots from being clipped.
-            */}
+          <div
+            className="overflow-x-auto pb-16 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            onClick={handleTimelineBackgroundClick}
+          >
             <motion.div
               layout
               transition={{
                 duration: 0.55,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="relative mx-auto h-48 min-w-[1200px]"
+              className="relative mx-auto h-56 min-w-[1200px]"
             >
               {/* =====================================================
                   INNER AXIS AREA
@@ -307,7 +361,7 @@ export default function TimeLinePage() {
                 {/* Main axis */}
                 <div className="absolute left-0 right-0 top-1/2 h-px bg-stone-700/60" />
 
-                {/* Amber glow when zoomed */}
+                {/* Zoom glow */}
                 <AnimatePresence>
                   {selectedMain && (
                     <motion.div
@@ -332,14 +386,18 @@ export default function TimeLinePage() {
                 {visibleEvents.map((event) => {
                   const position = getPosition(event);
 
-                  const isMain = mainTimelineEvents.some(
-                    (main) => main.id === event.id,
-                  );
+                  const isMain = isMajorEvent(event);
 
-                  const isSelected = event.id === selectedMainId;
+                  const isSelected =
+                    event.id === selectedMainId;
 
                   const isHovered =
                     hoveredEvent?.id === event.id;
+
+                  const lane =
+                    !isMain && selectedMain
+                      ? getSmallEventLane(event)
+                      : "above";
 
                   return (
                     <motion.div
@@ -370,19 +428,48 @@ export default function TimeLinePage() {
                       onMouseLeave={() =>
                         setHoveredEvent(null)
                       }
+                      onClick={(e) => {
+                        /*
+                         * Prevent the background click handler
+                         * from immediately closing the card.
+                         */
+                        e.stopPropagation();
+                      }}
                     >
+                      {/* =================================================
+                          CONNECTOR FOR SMALL EVENTS
+                      ================================================== */}
+
+                      {!isMain && selectedMain && (
+                        <motion.div
+                          initial={{
+                            opacity: 0,
+                          }}
+                          animate={{
+                            opacity: 1,
+                          }}
+                          className={`
+                            absolute left-1/2 w-px
+                            -translate-x-1/2
+                            bg-stone-700/50
+                            ${
+                              lane === "above"
+                                ? "bottom-1/2 h-[34px]"
+                                : "top-1/2 h-[34px]"
+                            }
+                          `}
+                        />
+                      )}
+
                       {/* =================================================
                           NODE
                       ================================================== */}
 
                       <button
                         type="button"
-                        onClick={() => {
-                          if (isMain) {
-                            setSelectedMainId(event.id);
-                            setHoveredEvent(null);
-                          }
-                        }}
+                        onClick={() =>
+                          handleEventClick(event)
+                        }
                         className="group absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                       >
                         <motion.div
@@ -427,56 +514,122 @@ export default function TimeLinePage() {
                       </button>
 
                       {/* =================================================
-                          DATE
-                      ================================================== */}
-
-                      <div
-                        className={`
-                          absolute left-1/2 top-[calc(50%+24px)]
-                          -translate-x-1/2 whitespace-nowrap
-                          font-mono text-[9px]
-                          ${
-                            isMain
-                              ? "text-amber-400"
-                              : "text-stone-600"
-                          }
-                        `}
-                      >
-                        {formatYear(
-                          event.year,
-                          event.era,
-                        )}
-                      </div>
-
-                      {/* =================================================
-                          MAIN EVENT TITLE
+                          MAIN EVENT
                       ================================================== */}
 
                       {isMain && (
-                        <div
-                          className={`
-                            absolute left-1/2 top-[calc(50%-52px)]
-                            -translate-x-1/2 whitespace-nowrap
-                            font-serif text-sm
-                            ${
-                              isSelected
-                                ? "text-amber-300"
-                                : "text-stone-300"
-                            }
-                          `}
-                        >
-                          {event.title}
-                        </div>
+                        <>
+                          {/* Title */}
+                          <div
+                            className={`
+                              absolute left-1/2
+                              top-[calc(50%-52px)]
+                              -translate-x-1/2
+                              whitespace-nowrap
+                              font-serif text-sm
+                              ${
+                                isSelected
+                                  ? "text-amber-300"
+                                  : "text-stone-300"
+                              }
+                            `}
+                          >
+                            {event.title}
+                          </div>
+
+                          {/* Date */}
+                          <div
+                            className="
+                              absolute left-1/2
+                              top-[calc(50%+24px)]
+                              -translate-x-1/2
+                              whitespace-nowrap
+                              font-mono text-[9px]
+                              text-amber-400
+                            "
+                          >
+                            {formatYear(
+                              event.year,
+                              event.era,
+                            )}
+                          </div>
+                        </>
                       )}
 
                       {/* =================================================
-                          SMALL EVENT TITLE
+                          SMALL EVENT - ABOVE
                       ================================================== */}
 
-                      {!isMain && (
-                        <div className="absolute left-1/2 top-[calc(50%+42px)] -translate-x-1/2 whitespace-nowrap text-[9px] text-stone-600">
-                          {event.title}
-                        </div>
+                      {!isMain && lane === "above" && (
+                        <>
+                          <div
+                            className="
+                              absolute bottom-[calc(50%+42px)]
+                              left-1/2
+                              -translate-x-1/2
+                              whitespace-nowrap
+                              text-center
+                              text-[9px]
+                              text-stone-500
+                            "
+                          >
+                            {event.title}
+                          </div>
+
+                          <div
+                            className="
+                              absolute bottom-[calc(50%+25px)]
+                              left-1/2
+                              -translate-x-1/2
+                              whitespace-nowrap
+                              font-mono text-[8px]
+                              text-stone-600
+                            "
+                          >
+                            {formatYear(
+                              event.year,
+                              event.era,
+                            )}
+                          </div>
+                        </>
+                      )}
+
+                      {/* =================================================
+                          SMALL EVENT - BELOW
+                      ================================================== */}
+
+                      {!isMain && lane === "below" && (
+                        <>
+                          <div
+                            className="
+                              absolute top-[calc(50%+42px)]
+                              left-1/2
+                              -translate-x-1/2
+                              whitespace-nowrap
+                              text-center
+                              text-[9px]
+                              text-stone-500
+                            "
+                          >
+                            {event.title}
+                          </div>
+
+                          <div
+                            className="
+                              absolute top-[calc(50%+58px)]
+                              left-1/2
+                              -translate-x-1/2
+                              whitespace-nowrap
+                              font-mono text-[8px]
+                              text-stone-600
+                            "
+                          >
+                            {formatYear(
+                              event.year,
+                              event.era,
+                            )}
+                          </div>
+                        </>
                       )}
                     </motion.div>
                   );
@@ -518,7 +671,7 @@ export default function TimeLinePage() {
         ========================================================== */}
 
         <div className="mt-10 flex justify-center">
-          <div className="flex items-center gap-6 rounded-full border border-white/5 bg-white/[0.02] px-5 py-2.5">
+          <div className="flex flex-wrap items-center justify-center gap-4 rounded-full border border-white/5 bg-white/[0.02] px-5 py-2.5 sm:gap-6">
             {/* Major */}
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
@@ -528,7 +681,7 @@ export default function TimeLinePage() {
               </span>
             </div>
 
-            <div className="h-3 w-px bg-white/10" />
+            <div className="hidden h-3 w-px bg-white/10 sm:block" />
 
             {/* Small */}
             <div className="flex items-center gap-2">
@@ -539,7 +692,7 @@ export default function TimeLinePage() {
               </span>
             </div>
 
-            <div className="h-3 w-px bg-white/10" />
+            <div className="hidden h-3 w-px bg-white/10 sm:block" />
 
             {/* Calendar */}
             <span className="font-mono text-[10px] text-stone-600">
