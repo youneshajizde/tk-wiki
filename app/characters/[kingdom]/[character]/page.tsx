@@ -16,7 +16,9 @@ export default function CharacterDetailsPage() {
 
   const kingdomCharacters = characters[kingdomId] ?? [];
 
-  const character = kingdomCharacters.find((item) => item.id === characterId);
+  const character = kingdomCharacters.find(
+    (item) => item.id === characterId
+  );
 
   if (!kingdom || !character) {
     return (
@@ -35,12 +37,19 @@ export default function CharacterDetailsPage() {
     );
   }
 
+  const { identity, description } = character;
+
+  const title = identity.titles[0] ?? identity.role;
+
   return (
     <main className="min-h-screen bg-[#090807] text-stone-100">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10">
         {/* Breadcrumb */}
         <div className="flex flex-wrap gap-3 text-[9px] uppercase tracking-[0.25em] text-stone-700">
-          <Link href="/" className="transition-colors hover:text-amber-400">
+          <Link
+            href="/"
+            className="transition-colors hover:text-amber-400"
+          >
             The True Kingdom
           </Link>
 
@@ -64,7 +73,7 @@ export default function CharacterDetailsPage() {
 
           <span>/</span>
 
-          <span className="text-stone-500">{character.name}</span>
+          <span className="text-stone-500">{identity.name}</span>
         </div>
 
         {/* Character Hero */}
@@ -72,12 +81,18 @@ export default function CharacterDetailsPage() {
           <div className="grid lg:grid-cols-[45%_55%]">
             {/* Image */}
             <div className="relative min-h-[550px] overflow-hidden lg:min-h-[700px]">
-              {character.image && (
+              {character.image ? (
                 <img
                   src={character.image}
-                  alt={character.name}
+                  alt={identity.name}
                   className="absolute inset-0 h-full w-full object-cover object-center"
                 />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-[#11100d]">
+                  <span className="font-serif text-2xl text-stone-700">
+                    No Portrait
+                  </span>
+                </div>
               )}
 
               {/* Image overlay */}
@@ -86,7 +101,7 @@ export default function CharacterDetailsPage() {
               {/* Kingdom label */}
               <div className="absolute left-7 top-7 rounded-full border border-white/10 bg-black/30 px-4 py-2 backdrop-blur-md">
                 <span className="text-[9px] uppercase tracking-[0.3em] text-stone-300/70">
-                  {kingdom.name}
+                  {identity.kingdom}
                 </span>
               </div>
             </div>
@@ -102,17 +117,17 @@ export default function CharacterDetailsPage() {
               </div>
 
               <p className="mt-8 text-[10px] uppercase tracking-[0.35em] text-amber-500/50">
-                {character.title}
+                {title}
               </p>
 
               <h1 className="mt-3 font-serif text-5xl leading-[0.95] text-stone-100 md:text-6xl lg:text-7xl">
-                {character.name}
+                {identity.name}
               </h1>
 
               <div className="mt-8 h-px w-16 bg-amber-400/30" />
 
               <p className="mt-8 max-w-xl text-sm leading-8 text-stone-400">
-                {character.description}
+                {description.overview}
               </p>
 
               {/* Character metadata */}
@@ -123,17 +138,37 @@ export default function CharacterDetailsPage() {
                   </div>
 
                   <div className="mt-2 font-serif text-lg text-stone-300">
-                    {kingdom.name}
+                    {identity.kingdom}
                   </div>
                 </div>
 
                 <div className="bg-[#11100d] p-5">
                   <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
-                    Title
+                    Role
                   </div>
 
                   <div className="mt-2 font-serif text-lg text-stone-300">
-                    {character.title}
+                    {identity.role}
+                  </div>
+                </div>
+
+                <div className="bg-[#11100d] p-5">
+                  <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
+                    Born
+                  </div>
+
+                  <div className="mt-2 font-serif text-lg text-stone-300">
+                    {identity.born}
+                  </div>
+                </div>
+
+                <div className="bg-[#11100d] p-5">
+                  <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
+                    Died
+                  </div>
+
+                  <div className="mt-2 font-serif text-lg text-stone-300">
+                    {identity.died}
                   </div>
                 </div>
               </div>
@@ -141,7 +176,7 @@ export default function CharacterDetailsPage() {
           </div>
         </section>
 
-        {/* Lore */}
+        {/* Chronicle */}
         <section className="mx-auto mt-24 max-w-4xl">
           <div className="mb-12 flex items-center gap-4">
             <div className="h-px flex-1 bg-white/5" />
@@ -154,55 +189,160 @@ export default function CharacterDetailsPage() {
           </div>
 
           <h2 className="font-serif text-4xl text-stone-200">
-            The Story of {character.name}
+            The Story of {identity.name}
           </h2>
 
           <p className="mt-8 text-sm leading-8 text-stone-500">
-            {character.description}
+            {description.overview}
           </p>
 
-          {/* Placeholder lore sections */}
-          <div className="mt-16 space-y-16">
-            <div>
-              <span className="font-mono text-[9px] text-amber-400/50">I</span>
+          {/* Biography */}
+          <div className="mt-16">
+            <span className="font-mono text-[9px] text-amber-400/50">
+              I
+            </span>
 
-              <h3 className="mt-3 font-serif text-2xl text-stone-300">
-                Early Life
-              </h3>
+            <h3 className="mt-3 font-serif text-2xl text-stone-300">
+              Biography
+            </h3>
 
-              <p className="mt-4 text-sm leading-8 text-stone-600">
-                The early years of {character.name}&apos;s life remain to be written
-                in the chronicles.
-              </p>
+            <p className="mt-4 text-sm leading-8 text-stone-600">
+              {description.biography}
+            </p>
+          </div>
+
+          {/* Appearance */}
+          <div className="mt-16">
+            <span className="font-mono text-[9px] text-amber-400/50">
+              II
+            </span>
+
+            <h3 className="mt-3 font-serif text-2xl text-stone-300">
+              Appearance
+            </h3>
+
+            <p className="mt-4 text-sm leading-8 text-stone-600">
+              {description.appearance}
+            </p>
+          </div>
+
+          {/* Personality */}
+          <div className="mt-16">
+            <span className="font-mono text-[9px] text-amber-400/50">
+              III
+            </span>
+
+            <h3 className="mt-3 font-serif text-2xl text-stone-300">
+              Personality
+            </h3>
+
+            <p className="mt-4 text-sm leading-8 text-stone-600">
+              {description.personality}
+            </p>
+          </div>
+
+          {/* Identity */}
+          <div className="mt-16">
+            <span className="font-mono text-[9px] text-amber-400/50">
+              IV
+            </span>
+
+            <h3 className="mt-3 font-serif text-2xl text-stone-300">
+              Identity
+            </h3>
+
+            <div className="mt-6 overflow-hidden rounded-xl border border-white/5">
+              <div className="grid grid-cols-1 divide-y divide-white/5 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+                <div className="bg-[#0d0c0a] p-5">
+                  <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
+                    Gender
+                  </div>
+
+                  <div className="mt-2 text-sm text-stone-400">
+                    {identity.gender}
+                  </div>
+                </div>
+
+                <div className="bg-[#0d0c0a] p-5">
+                  <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
+                    Sky Blood Status
+                  </div>
+
+                  <div className="mt-2 text-sm text-stone-400">
+                    {identity.skyBloodStatus}
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-white/5 bg-[#0d0c0a] p-5">
+                <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
+                  Titles
+                </div>
+
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {identity.titles.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-amber-400/10 bg-amber-400/5 px-3 py-1.5 text-xs text-stone-400"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Family */}
+          <div className="mt-16">
+            <span className="font-mono text-[9px] text-amber-400/50">
+              V
+            </span>
+
+            <h3 className="mt-3 font-serif text-2xl text-stone-300">
+              Lineage
+            </h3>
+
+            <div className="mt-6 grid gap-px overflow-hidden rounded-xl border border-white/5 bg-white/5 sm:grid-cols-2">
+              <div className="bg-[#11100d] p-5">
+                <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
+                  Father
+                </div>
+
+                <div className="mt-2 font-serif text-lg text-stone-300">
+                  {identity.father || "Unknown"}
+                </div>
+              </div>
+
+              <div className="bg-[#11100d] p-5">
+                <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
+                  Mother
+                </div>
+
+                <div className="mt-2 font-serif text-lg text-stone-300">
+                  {identity.mother || "Unknown"}
+                </div>
+              </div>
             </div>
 
-            <div>
-              <span className="font-mono text-[9px] text-amber-400/50">II</span>
+            {identity.issue.length > 0 && (
+              <div className="mt-6 rounded-xl border border-white/5 bg-[#11100d] p-5">
+                <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
+                  Issue
+                </div>
 
-              <h3 className="mt-3 font-serif text-2xl text-stone-300">
-                Rise to Power
-              </h3>
-
-              <p className="mt-4 text-sm leading-8 text-stone-600">
-                The events that shaped {character.name} and their rise within{" "}
-                {kingdom.name} will be recorded here.
-              </p>
-            </div>
-
-            <div>
-              <span className="font-mono text-[9px] text-amber-400/50">
-                III
-              </span>
-
-              <h3 className="mt-3 font-serif text-2xl text-stone-300">
-                Legacy
-              </h3>
-
-              <p className="mt-4 text-sm leading-8 text-stone-600">
-                The legacy of {character.name} continues to influence the
-                kingdoms long after their time.
-              </p>
-            </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {identity.issue.map((child) => (
+                    <span
+                      key={child}
+                      className="rounded-full border border-white/5 px-3 py-1.5 text-xs text-stone-400"
+                    >
+                      {child}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
