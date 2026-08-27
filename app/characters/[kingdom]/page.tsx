@@ -18,13 +18,8 @@ export default function KingdomCharactersPage() {
 
   const [search, setSearch] = useState("");
 
-  if (!kingdom) {
-    return null;
-  }
-
   const kingdomCharacters = characters[kingdomId] ?? [];
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const filteredCharacters = useMemo(() => {
     const query = search.toLowerCase().trim();
 
@@ -32,19 +27,29 @@ export default function KingdomCharactersPage() {
       return kingdomCharacters;
     }
 
-    return kingdomCharacters.filter((character) =>
-      `${character.name} ${character.title} ${character.description}`
+    return kingdomCharacters.filter((character) => {
+      const name = character.identity.name;
+      const titles = character.identity.titles.join(" ");
+      const role = character.identity.role;
+      const kingdom = character.identity.kingdom;
+      const overview = character.description.overview;
+
+      return `${name} ${titles} ${role} ${kingdom} ${overview}`
         .toLowerCase()
-        .includes(query)
-    );
+        .includes(query);
+    });
   }, [search, kingdomCharacters]);
+
+  if (!kingdom) {
+    return null;
+  }
 
   return (
     <main className="min-h-screen bg-[#090807] text-stone-100">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
 
         {/* Breadcrumb */}
-        <div className="flex gap-3 text-[9px] uppercase tracking-[0.25em] text-stone-700">
+        <div className="flex flex-wrap gap-3 text-[9px] uppercase tracking-[0.25em] text-stone-700">
           <Link
             href="/"
             className="transition-colors hover:text-amber-400"
@@ -109,66 +114,74 @@ export default function KingdomCharactersPage() {
 
         {/* Character Grid */}
         <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {filteredCharacters.map((character) => {
+            const name = character.identity.name;
 
-          {filteredCharacters.map((character) => (
-            <Link
-              key={character.id}
-              href={`/characters/${kingdomId}/${character.id}`}
-              className="group flex min-h-[280px] overflow-hidden rounded-2xl border border-white/5 bg-[#0d0c0a] transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/20"
-            >
-              {/* Portrait */}
-              <div className="relative w-[38%] shrink-0 overflow-hidden">
-                <img
-                  src={
-                    character.image ??
-                    "/images/character-1.jpg"
-                  }
-                  alt={character.name}
-                  className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                />
+            const title =
+              character.identity.titles[0] ??
+              character.identity.role;
 
-                {/* Image fade */}
-                <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-r from-transparent to-[#0d0c0a]" />
+            const overview = character.description.overview;
 
-                {/* Image darkness */}
-                <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:opacity-0" />
-              </div>
+            return (
+              <Link
+                key={character.id}
+                href={`/characters/${kingdomId}/${character.id}`}
+                className="group flex min-h-[280px] overflow-hidden rounded-2xl border border-white/5 bg-[#0d0c0a] transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/20"
+              >
+                {/* Portrait */}
+                <div className="relative w-[38%] shrink-0 overflow-hidden">
+                  <img
+                    src={
+                      character.image ??
+                      "/images/character-1.jpg"
+                    }
+                    alt={name}
+                    className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
 
-              {/* Content */}
-              <div className="flex min-w-0 flex-1 flex-col justify-center p-6">
-                <p className="text-[8px] uppercase tracking-[0.25em] text-amber-500/50">
-                  {character.title}
-                </p>
+                  {/* Image fade */}
+                  <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-r from-transparent to-[#0d0c0a]" />
 
-                <h2 className="mt-2 font-serif text-2xl leading-tight text-stone-100 transition-colors group-hover:text-amber-100">
-                  {character.name}
-                </h2>
-
-                <div className="mt-4 h-px w-8 bg-amber-400/30 transition-all duration-300 group-hover:w-12 group-hover:bg-amber-400/60" />
-
-                <p className="mt-4 line-clamp-4 text-xs leading-6 text-stone-500">
-                  {character.description}
-                </p>
-
-                <div className="mt-5 flex items-center gap-2 text-[8px] uppercase tracking-[0.25em] text-stone-700 transition-colors group-hover:text-amber-400/70">
-                  View character
-
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
+                  {/* Image darkness */}
+                  <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:opacity-0" />
                 </div>
-              </div>
-            </Link>
-          ))}
 
+                {/* Content */}
+                <div className="flex min-w-0 flex-1 flex-col justify-center p-6">
+                  <p className="text-[8px] uppercase tracking-[0.25em] text-amber-500/50">
+                    {title}
+                  </p>
+
+                  <h2 className="mt-2 font-serif text-2xl leading-tight text-stone-100 transition-colors group-hover:text-amber-100">
+                    {name}
+                  </h2>
+
+                  <div className="mt-4 h-px w-8 bg-amber-400/30 transition-all duration-300 group-hover:w-12 group-hover:bg-amber-400/60" />
+
+                  <p className="mt-4 line-clamp-4 text-xs leading-6 text-stone-500">
+                    {overview}
+                  </p>
+
+                  <div className="mt-5 flex items-center gap-2 text-[8px] uppercase tracking-[0.25em] text-stone-700 transition-colors group-hover:text-amber-400/70">
+                    View character
+
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
+        {/* Empty State */}
         {filteredCharacters.length === 0 && (
           <div className="py-24 text-center text-stone-700">
             No characters found.
           </div>
         )}
-
       </div>
     </main>
   );
