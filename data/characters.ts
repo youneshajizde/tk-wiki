@@ -31,7 +31,37 @@ export type Character = {
 export const characters: Record<string, Character[]> = {
   sylvane: [],
 
-  aqualis: [],
+  aqualis: [
+    {
+      id: "athaael",
+      identity: {
+        name: "Athaael",
+        titles: ["Scion of Aqva"],
+        kingdom: "Aqvalith",
+        role: "First Son of the Sky King",
+        gender: "Male",
+        skyBloodStatus: "Skyborn",
+        born: "BF 289",
+        died: "",
+        father: "Kaeras",
+        mother: "",
+        issue: ["Athus", "Ethenor"],
+        spouse: [],
+      },
+      description: {
+        overview:
+          "Athaael is the firstborn son of Kaeras, the Sky King, and the Scion of Aqva. Born approximately two hundred years after Kaeras's rise, he was raised from childhood to become a ruler and eventually took control of Aqvalith, the kingdom shaped by the power of the sea. As the oldest of the five Scions, Athaael has the longest history of rule among his siblings. He is a capable and prudent ruler who governs Aqvalith through a system resembling a constitutional monarchy, relying on a council and representatives for major decisions.",
+        appearance:
+          "Athaael is a tall, broad-shouldered man with a powerful and imposing physique. He has a mature, weathered face, dark wavy hair, thick eyebrows, and a short, rugged beard. His features carry the appearance of a man who has lived for centuries, while retaining the strength and vitality of a Scion. His eyes are naturally silver, reflecting a faint amount of light from within the shadows of the iris rather than appearing completely luminous. When Athaael enters a focused state and actively channels Kaelom, the silver of his eyes begins to glow, intensifying the light reflected from within them. Athaael wears ceremonial attire dominated by deep navy blue, silver, and ivory. His clothing consists of a layered ivory robe with intricate patterns, reinforced by dark blue embroidered bands and ornamental panels. Metallic shoulder clasps, bracers, and other elements of his attire are decorated with aquatic and celestial motifs. The most distinctive symbol of his attire is the oarfish, which appears both on his headdress and on his clothing. The oarfish is a sacred and symbolic creature of Aqvalith and represents the kingdom's deep connection with the sea. His ceremonial headdress is decorated with an oarfish figure at its crown, while another representation of the creature is incorporated into the front of his garment. The overall design of Athaael reflects both his position as the Scion of Aqva and his status as the ruler of Aqvalith, combining the imagery of the sea with the celestial symbolism inherited from the Sky King.",
+        personality:
+          "Athaael is a capable, prudent, and politically minded ruler. As the oldest of the five Scions, he has the longest experience in governance and has developed a more established approach to ruling than his younger siblings. His leadership is characterized by careful decision-making and the use of representatives and a governing council for matters of major importance.",
+        biography:
+          "Athaael was born in BF 289 as the first child of Kaeras, the Sky King, and became the first of the five Scions. He was born approximately two hundred years after Kaeras's rise, at the command of Aqva, and was raised in a coastal environment closely connected to the sea. Like the other Scions, he was raised from childhood to become a leader, with the purpose of eventually governing a portion of the kingdom created and expanded through the power within him. As the Scion of Aqva, Athaael inherited the divine power associated with the sea. He eventually became the ruler of Aqvalith, a kingdom consisting of countless islands formed after the rise of the world's waters. His reign is the longest among the five Scions due to his position as the firstborn. Athaael governs Aqvalith through a system resembling a constitutional monarchy, using a council and various representatives for major decisions rather than relying solely on absolute personal rule. Athaael remains alive and is currently involved in the War of Retribution.",
+      },
+      image: "/images/character-3.jpg",
+      gallery: [],
+    },
+  ],
 
   qetaria: [],
 
@@ -60,13 +90,7 @@ export const characters: Record<string, Character[]> = {
 
         mother: "",
 
-        issue: [
-          "Athaael",
-          "Sorchae",
-          "Nishaera",
-          "Bërgoth",
-          "Draegrik",
-        ],
+        issue: ["Athaael", "Sorchae", "Nishaera", "Bërgoth", "Draegrik"],
 
         spouse: [],
       },
