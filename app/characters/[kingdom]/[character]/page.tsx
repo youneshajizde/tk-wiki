@@ -337,20 +337,6 @@ export default function CharacterDetailsPage() {
               {description.overview}
             </p>
           </div>
-
-          {/* Biography */}
-          <div className="mt-20">
-            <span className="font-mono text-[9px] text-amber-400/50">01</span>
-
-            <h3 className="mt-3 font-serif text-3xl text-stone-300">
-              Biography
-            </h3>
-
-            <p className="mt-6 text-sm leading-8 text-stone-600">
-              {description.biography}
-            </p>
-          </div>
-
           {/* Appearance */}
           <div className="mt-20">
             <span className="font-mono text-[9px] text-amber-400/50">02</span>
@@ -363,7 +349,6 @@ export default function CharacterDetailsPage() {
               {description.appearance}
             </p>
           </div>
-
           {/* Personality */}
           <div className="mt-20">
             <span className="font-mono text-[9px] text-amber-400/50">03</span>
@@ -374,6 +359,18 @@ export default function CharacterDetailsPage() {
 
             <p className="mt-6 text-sm leading-8 text-stone-600">
               {description.personality}
+            </p>
+          </div>
+          {/* Biography */}
+          <div className="mt-20">
+            <span className="font-mono text-[9px] text-amber-400/50">01</span>
+
+            <h3 className="mt-3 font-serif text-3xl text-stone-300">
+              Biography
+            </h3>
+
+            <p className="mt-6 text-sm leading-8 text-stone-600">
+              {description.biography}
             </p>
           </div>
         </section>
