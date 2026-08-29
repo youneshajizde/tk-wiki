@@ -13,12 +13,9 @@ export default function CharacterDetailsPage() {
   const characterId = params.character as string;
 
   const kingdom = kingdoms.find((item) => item.id === kingdomId);
-
   const kingdomCharacters = characters[kingdomId] ?? [];
 
-  const character = kingdomCharacters.find(
-    (item) => item.id === characterId
-  );
+  const character = kingdomCharacters.find((item) => item.id === characterId);
 
   if (!kingdom || !character) {
     return (
@@ -38,19 +35,14 @@ export default function CharacterDetailsPage() {
   }
 
   const { identity, description } = character;
-
   const title = identity.titles[0] ?? identity.role;
 
   return (
     <main className="min-h-screen bg-[#090807] text-stone-100">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10">
-
         {/* Breadcrumb */}
         <div className="flex flex-wrap gap-3 text-[9px] uppercase tracking-[0.25em] text-stone-700">
-          <Link
-            href="/"
-            className="transition-colors hover:text-amber-400"
-          >
+          <Link href="/" className="transition-colors hover:text-amber-400">
             The True Kingdom
           </Link>
 
@@ -76,24 +68,22 @@ export default function CharacterDetailsPage() {
 
           <span className="text-stone-500">{identity.name}</span>
         </div>
-
         {/* =========================================================
-            CHARACTER HEADER
-        ========================================================= */}
-        <section className="mt-16 overflow-hidden rounded-3xl border border-white/5 bg-[#0d0c0a]">
-          <div className="grid lg:grid-cols-[45%_55%]">
-
+    CHARACTER HEADER — COMPACT
+========================================================= */}
+        <section className="mt-10 overflow-hidden rounded-2xl border border-white/5 bg-[#0d0c0a]">
+          <div className="grid lg:grid-cols-[30%_70%]">
             {/* Portrait */}
-            <div className="relative min-h-[500px] overflow-hidden lg:min-h-[650px]">
+            <div className="relative h-[420px] overflow-hidden bg-[#11100d] sm:h-[460px] lg:h-[360px]">
               {character.image ? (
                 <img
                   src={character.image}
                   alt={identity.name}
-                  className="absolute inset-0 h-full w-full object-cover object-center"
+                  className="absolute inset-0 h-full w-full object-contain object-center lg:object-cover"
                 />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-[#11100d]">
-                  <span className="font-serif text-2xl text-stone-700">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="font-serif text-lg text-stone-700">
                     No Portrait
                   </span>
                 </div>
@@ -101,46 +91,41 @@ export default function CharacterDetailsPage() {
 
               <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0a] via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#0d0c0a]" />
 
-              <div className="absolute left-7 top-7 rounded-full border border-white/10 bg-black/30 px-4 py-2 backdrop-blur-md">
-                <span className="text-[9px] uppercase tracking-[0.3em] text-stone-300/70">
+              {/* Kingdom */}
+              <div className="absolute left-5 top-5 rounded-full border border-white/10 bg-black/30 px-3 py-1.5 backdrop-blur-md">
+                <span className="text-[8px] uppercase tracking-[0.3em] text-stone-300/70">
                   {identity.kingdom}
                 </span>
               </div>
             </div>
 
             {/* Name */}
-            <div className="flex flex-col justify-center p-8 sm:p-12 lg:p-16">
+            <div className="flex min-h-[260px] flex-col justify-center px-8 py-8 sm:px-10 lg:min-h-[360px] lg:px-14">
               <div className="flex items-center gap-3">
-                <div className="h-px w-10 bg-amber-400/50" />
+                <div className="h-px w-7 bg-amber-400/50" />
 
-                <span className="text-[9px] font-semibold uppercase tracking-[0.35em] text-amber-400/60">
-                  Character Chronicle
+                <span className="text-[8px] font-semibold uppercase tracking-[0.35em] text-amber-400/60">
+                  Character
                 </span>
               </div>
 
-              <p className="mt-8 text-[10px] uppercase tracking-[0.35em] text-amber-500/50">
+              <p className="mt-5 text-[9px] uppercase tracking-[0.35em] text-amber-500/50">
                 {title}
               </p>
 
-              <h1 className="mt-3 font-serif text-5xl leading-[0.95] text-stone-100 md:text-6xl lg:text-7xl">
+              <h1 className="mt-2 font-serif text-4xl leading-none text-stone-100 md:text-5xl">
                 {identity.name}
               </h1>
 
-              <div className="mt-8 h-px w-16 bg-amber-400/30" />
-
-              <p className="mt-8 max-w-xl text-sm leading-8 text-stone-400">
-                {description.overview}
-              </p>
+              <div className="mt-5 h-px w-10 bg-amber-400/30" />
             </div>
           </div>
         </section>
-
         {/* =========================================================
             I. IDENTITY
         ========================================================= */}
-        <section className="mx-auto mt-24 max-w-5xl">
-
-          <div className="mb-12 flex items-center gap-4">
+        <section className="mx-auto mt-20 max-w-5xl">
+          <div className="mb-10 flex items-center gap-4">
             <div className="h-px flex-1 bg-white/5" />
 
             <span className="text-[9px] uppercase tracking-[0.35em] text-amber-400/50">
@@ -150,19 +135,16 @@ export default function CharacterDetailsPage() {
             <div className="h-px flex-1 bg-white/5" />
           </div>
 
-          <div className="mb-10">
-            <h2 className="font-serif text-4xl text-stone-200">
-              Who is {identity.name}?
-            </h2>
+          <div className="mb-8">
+            <h2 className="font-serif text-3xl text-stone-200">Identity</h2>
 
-            <p className="mt-4 max-w-3xl text-sm leading-8 text-stone-600">
+            <p className="mt-3 text-sm leading-7 text-stone-600">
               The known identity, status, and lineage of {identity.name}.
             </p>
           </div>
 
-          {/* Main Identity Cards */}
+          {/* Identity Cards */}
           <div className="grid gap-px overflow-hidden rounded-2xl border border-white/5 bg-white/5 sm:grid-cols-2 lg:grid-cols-3">
-
             {/* Kingdom */}
             <div className="bg-[#11100d] p-6">
               <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
@@ -225,7 +207,7 @@ export default function CharacterDetailsPage() {
               </div>
 
               <div className="mt-3 font-serif text-xl text-stone-300">
-                {identity.died}
+                {identity.died || "Living"}
               </div>
             </div>
           </div>
@@ -263,7 +245,6 @@ export default function CharacterDetailsPage() {
             </div>
 
             <div className="grid gap-px overflow-hidden rounded-2xl border border-white/5 bg-white/5 sm:grid-cols-2">
-
               {/* Father */}
               <div className="bg-[#11100d] p-6">
                 <div className="text-[8px] uppercase tracking-[0.25em] text-stone-700">
@@ -328,12 +309,10 @@ export default function CharacterDetailsPage() {
             )}
           </div>
         </section>
-
         {/* =========================================================
-            II. DESCRIPTION / CHRONICLE
+            II. DESCRIPTION
         ========================================================= */}
-        <section className="mx-auto mt-32 max-w-4xl">
-
+        <section className="mx-auto mt-28 max-w-4xl">
           <div className="mb-12 flex items-center gap-4">
             <div className="h-px flex-1 bg-white/5" />
 
@@ -348,7 +327,7 @@ export default function CharacterDetailsPage() {
             The Story of {identity.name}
           </h2>
 
-          {/* Overview */}
+          {/* Overview — FIRST description section */}
           <div className="mt-12 border-l border-amber-400/20 pl-6">
             <span className="text-[9px] uppercase tracking-[0.3em] text-amber-400/50">
               Overview
@@ -361,9 +340,7 @@ export default function CharacterDetailsPage() {
 
           {/* Biography */}
           <div className="mt-20">
-            <span className="font-mono text-[9px] text-amber-400/50">
-              01
-            </span>
+            <span className="font-mono text-[9px] text-amber-400/50">01</span>
 
             <h3 className="mt-3 font-serif text-3xl text-stone-300">
               Biography
@@ -376,9 +353,7 @@ export default function CharacterDetailsPage() {
 
           {/* Appearance */}
           <div className="mt-20">
-            <span className="font-mono text-[9px] text-amber-400/50">
-              02
-            </span>
+            <span className="font-mono text-[9px] text-amber-400/50">02</span>
 
             <h3 className="mt-3 font-serif text-3xl text-stone-300">
               Appearance
@@ -391,9 +366,7 @@ export default function CharacterDetailsPage() {
 
           {/* Personality */}
           <div className="mt-20">
-            <span className="font-mono text-[9px] text-amber-400/50">
-              03
-            </span>
+            <span className="font-mono text-[9px] text-amber-400/50">03</span>
 
             <h3 className="mt-3 font-serif text-3xl text-stone-300">
               Personality
@@ -404,10 +377,7 @@ export default function CharacterDetailsPage() {
             </p>
           </div>
         </section>
-
-        {/* =========================================================
-            BACK
-        ========================================================= */}
+        {/* Back */}
         <div className="mt-24 border-t border-white/5 pt-8">
           <Link
             href={`/characters/${kingdomId}`}

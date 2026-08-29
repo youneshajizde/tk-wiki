@@ -101,7 +101,7 @@ export const smallTimelineEvents: SmallTimelineEvent[] = [
     era: "BF",
     title: "Birth of Athaael",
     description:
-      "Athaael, Scion of the Sea and heir of Aqualis, is born 203 years after the beginning of the Age of Harmony. Kaeras is 417 years old.",
+      "Athaael, Scion of the Sea and heir of aqvalith, is born 203 years after the beginning of the Age of Harmony. Kaeras is 417 years old.",
     image: "/images/timeline/athaael-born.jpg",
   },
 

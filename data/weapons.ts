@@ -18,9 +18,9 @@ export const weapons: Record<string, Weapon[]> = {
     },
   ],
 
-  aqualis: [],
+  aqvalith: [],
 
-  qetaria: [],
+  zohanim: [],
 
   others: [],
 };

@@ -16,26 +16,40 @@ export const kingdoms: Kingdom[] = [
       "A realm of ancient forests, noble houses, and old bloodlines.",
   },
   {
-    id: "aqualis",
-    name: "Kingdom of Aqualis",
+    id: "aqvalith",
+    name: "Kingdom of Aqvalith",
     subtitle: "The Kingdom of Ocean",
-    sigil: "/images/Aqualis-kd.jpg",
+    sigil: "/images/aqvalith-kd.jpg",
     description:
       "A maritime kingdom whose influence stretches across the great seas.",
   },
   {
-    id: "qetaria",
-    name: "Kingdom of Qetaria",
+    id: "zohanim",
+    name: "Kingdom of Zohanim",
     subtitle: "The Kingdom of Sand",
-    sigil: "/images/qetaria-kd.jpg",
+    sigil: "/images/zohanim-kd.jpg",
     description:
       "An ancient kingdom of deserts, cities, and powerful dynasties.",
+  },
+  {
+    id: "dorgen",
+    name: "Kingdom of ",
+    subtitle: "The Kingdom of mountains",
+    sigil: "/images/dorgen-kd.jpg",
+    description: "An ancient kingdom of mountains, and powerful clans.",
+  },
+  {
+    id: "vintra",
+    name: "Kingdom of vintra",
+    subtitle: "The Kingdom of winter",
+    sigil: "/images/vintra-kd.jpg",
+    description: "An ancient kingdom of winter.",
   },
   {
     id: "others",
     name: "The Other Kingdoms",
     subtitle: "Beyond the Known Realms",
-    sigil: "/images/others-kd.png",
+    sigil: "/images/others-kd.jpg",
     description:
       "Lesser kingdoms and distant lands beyond the borders of the great realms.",
   },

@@ -31,7 +31,7 @@ export type Character = {
 export const characters: Record<string, Character[]> = {
   sylvane: [],
 
-  aqualis: [
+  aqvalith: [
     {
       id: "athaael",
       identity: {
@@ -63,7 +63,7 @@ export const characters: Record<string, Character[]> = {
     },
   ],
 
-  qetaria: [],
+  zohanim: [],
 
   others: [
     {

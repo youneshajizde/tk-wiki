@@ -24,11 +24,11 @@ export const characters: Record<string, LoreItem[]> = {
     },
   ],
 
-  aqualis: [
+  aqvalith: [
     {
       id: "hebron",
       name: "Hebron",
-      subtitle: "Aquator of Aqualis",
+      subtitle: "Aquator of aqvalith",
       description:
         "A senator of the ocean kingdom and a powerful political figure.",
     },
@@ -37,11 +37,11 @@ export const characters: Record<string, LoreItem[]> = {
       name: "Thaalus",
       subtitle: "Aquator",
       description:
-        "An elder senator possessing one of the greatest fleets in Aqualis.",
+        "An elder senator possessing one of the greatest fleets in aqvalith.",
     },
   ],
 
-  qetaria: [],
+  zohanim: [],
 
   others: [],
 };
@@ -57,9 +57,9 @@ export const weapons: Record<string, LoreItem[]> = {
     },
   ],
 
-  aqualis: [],
+  aqvalith: [],
 
-  qetaria: [],
+  zohanim: [],
 
   others: [],
 };
@@ -75,9 +75,9 @@ export const locations: Record<string, LoreItem[]> = {
     },
   ],
 
-  aqualis: [],
+  aqvalith: [],
 
-  qetaria: [],
+  zohanim: [],
 
   others: [],
 };

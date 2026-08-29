@@ -18,9 +18,9 @@ export const locations: Record<string, Location[]> = {
     },
   ],
 
-  aqualis: [],
+  aqvalith: [],
 
-  qetaria: [],
+  zohanim: [],
 
   others: [],
 };
