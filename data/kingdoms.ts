@@ -33,7 +33,7 @@ export const kingdoms: Kingdom[] = [
   },
   {
     id: "dorgen",
-    name: "Kingdom of ",
+    name: "Kingdom of Dorgen",
     subtitle: "The Kingdom of mountains",
     sigil: "/images/dorgen-kd.jpg",
     description: "An ancient kingdom of mountains, and powerful clans.",
